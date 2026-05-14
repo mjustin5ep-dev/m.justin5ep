@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Undangan DRAMA ARENA 5101</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@300;400;600;800&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap');
+
+        :root {
+            --primary: #ff8000;
+            --secondary: #ffffff;
+            --dark: #0a0a0a;
+            --glow: 0 0 15px rgba(255, 128, 0, 0.6);
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--dark);
+            color: var(--secondary);
+            overflow-x: hidden;
+        }
+
+        /* Utility Fonts */
+        .font-cinzel { font-family: 'Cinzel', serif; }
+        .font-playfair { font-family: 'Playfair Display', serif; }
+        .text-primary { color: var(--primary); }
+        .bg-primary { background-color: var(--primary); }
+        
+        /* Background Parallax */
+        .hero-bg {
+            background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.8)), url('https://lh3.googleusercontent.com/d/1JxXi6JnArPi6cZswMxOKTI2VqRKA8m96');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed; /* Parallax effect */
+        }
+
+        /* Fix Parallax Lag di Mobile Devices */
+        @media (max-width: 768px) {
+            .hero-bg {
+                background-attachment: scroll;
+            }
+        }
+
+        /* Glow Effects */
+        .glow-text { text-shadow: var(--glow), 0 0 30px rgba(255, 128, 0, 0.4); }
+        .glow-border { box-shadow: var(--glow); border: 1px solid var(--primary); }
+
+        .glow-button {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 0 10px rgba(255, 128, 0, 0.3);
+        }
+        
+        .glow-button:hover {
+            box-shadow: 0 0 25px rgba(255, 128, 0, 0.8);
+            transform: scale(1.05);
+        }
+
+        /* Cover Overlay Animations */
+        #cover {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 9999;
+            background: linear-gradient(to bottom, #1a1a1a, #000000);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            /* Tambahkan transisi opacity agar lebih mulus */
+            transition: transform 1.2s cubic-bezier(0.645, 0.045, 0.355, 1), 
+                        opacity 1s ease-in-out;
+        }
+
+        #cover.opened {
+            transform: translateY(-100%);
+            opacity: 0;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #1a1a1a; }
+        ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 10px; }
+
+        .glass {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .countdown-item {
+            background: rgba(255, 128, 0, 0.1);
+            border: 1px solid var(--primary);
+            min-width: 80px;
+            backdrop-filter: blur(4px);
+        }
+
+        /* Floating Animation */
+        @keyframes floating {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-12px); }
+            100% { transform: translateY(0px); }
+        }
+        .animate-floating {
+            animation: floating 3.5s ease-in-out infinite;
+        }
+    </style>
+</head>
+<!-- Gunakan overflow-hidden secara default agar tidak bisa discroll sebelum dibuka -->
+<body class="bg-black overflow-hidden">
+
+    <!-- Background Music -->
+    <!-- Perbaikan format link google drive (ubah /view menjadi /uc?export=download) -->
+    <audio id="bgMusic" loop preload="auto">
+        <source src="https://drive.google.com/uc?export=download&id=1Cl7NnuUD6-D0puXQBdn35tPBH8Hm12zV" type="audio/mp3">
+        <!-- Cadangan Audio -->
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mp3">
+    </audio>
+
+    <!-- Music Toggle Button -->
+    <button id="musicToggle" class="fixed bottom-5 right-5 z-50 bg-primary text-black w-12 h-12 rounded-full flex items-center justify-center glow-border opacity-0 transition-opacity duration-700 pointer-events-none">
+        <i class="fas fa-music"></i>
+    </button>
+
+    <!-- COVER SECTION -->
+    <div id="cover">
+        <div class="text-center px-6">
+            <img src="https://lh3.googleusercontent.com/d/1gbmxfQCB_wSzssFWNQ-S6b_VZMycrvA9" alt="Logo DA" class="w-32 mx-auto mb-8 animate-floating">
+            <h2 class="text-primary tracking-[0.3em] font-cinzel text-sm mb-2">UNDANGAN RESMI</h2>
+            <h1 class="text-white text-4xl md:text-6xl font-cinzel font-bold mb-4 glow-text">DRAMA ARENA 5101</h1>
+            <p class="text-gray-300 italic mb-10 max-w-md mx-auto">"Hidupkan Kebersamaan, Nyalakan Api Perjuangan"</p>
+            
+            <button onclick="openInvitation()" class="glow-button bg-primary text-black font-bold py-4 px-10 rounded-full tracking-widest uppercase text-sm animate-pulse hover:animate-none">
+                Buka Undangan
+            </button>
+        </div>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <main id="main-content" class="hidden opacity-0 transition-opacity duration-1000">
+        
+        <!-- HERO SECTION -->
+        <section class="hero-bg h-screen flex flex-col items-center justify-center text-center px-4 relative">
+            <div data-aos="zoom-in" data-aos-duration="1500">
+                <img src="https://lh3.googleusercontent.com/d/1gbmxfQCB_wSzssFWNQ-S6b_VZMycrvA9" class="w-24 mx-auto mb-6">
+                <h3 class="text-primary font-cinzel tracking-[0.5em] mb-4">PAGELARAN SENI AKBAR</h3>
+                <h1 class="text-5xl md:text-8xl font-cinzel font-bold glow-text mb-6">DRAMA ARENA <br> <span class="text-white">5101</span></h1>
+                <div class="h-1 w-24 bg-primary mx-auto mb-6"></div>
+                <p class="text-xl md:text-2xl font-playfair italic text-white max-w-2xl mx-auto drop-shadow-lg">
+                    "HIDUPKAN KEBERSAMAAN, NYALAKAN API PERJUANGAN"
+                </p>
+            </div>
+            
+            <div class="absolute bottom-10 animate-bounce">
+                <i class="fas fa-chevron-down text-primary text-2xl drop-shadow-md"></i>
+            </div>
+        </section>
+
+        <!-- COUNTDOWN SECTION -->
+        <section class="py-20 bg-black relative overflow-hidden">
+            <div class="container mx-auto px-4 text-center">
+                <h2 class="text-primary font-cinzel text-2xl mb-10 tracking-widest" data-aos="fade-up">MENGHITUNG HARI</h2>
+                <div class="flex flex-wrap justify-center gap-4 md:gap-8" data-aos="fade-up" data-aos-delay="100">
+                    <div class="countdown-item p-4 rounded-lg shadow-lg">
+                        <span id="days" class="block text-4xl md:text-5xl font-bold text-primary">00</span>
+                        <span class="text-xs uppercase tracking-widest">Hari</span>
+                    </div>
+                    <div class="countdown-item p-4 rounded-lg shadow-lg">
+                        <span id="hours" class="block text-4xl md:text-5xl font-bold text-primary">00</span>
+                        <span class="text-xs uppercase tracking-widest">Jam</span>
+                    </div>
+                    <div class="countdown-item p-4 rounded-lg shadow-lg">
+                        <span id="minutes" class="block text-4xl md:text-5xl font-bold text-primary">00</span>
+                        <span class="text-xs uppercase tracking-widest">Menit</span>
+                    </div>
+                    <div class="countdown-item p-4 rounded-lg shadow-lg">
+                        <span id="seconds" class="block text-4xl md:text-5xl font-bold text-primary">00</span>
+                        <span class="text-xs uppercase tracking-widest">Detik</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- EVENT DETAILS -->
+        <section class="py-20 relative px-4">
+            <div class="container mx-auto max-w-5xl">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                    <div data-aos="fade-right">
+                        <h2 class="text-4xl font-cinzel font-bold text-primary mb-6">WAKTU & TEMPAT</h2>
+                        <div class="space-y-6">
+                            <div class="flex items-start space-x-4">
+                                <div class="bg-primary/20 p-3 rounded-full text-primary shadow-inner">
+                                    <i class="far fa-calendar-alt text-2xl"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg">Hari / Tanggal</h4>
+                                    <p class="text-gray-300">Minggu, 17 Mei 2026</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start space-x-4">
+                                <div class="bg-primary/20 p-3 rounded-full text-primary shadow-inner">
+                                    <i class="far fa-clock text-2xl"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg">Waktu Pelaksanaan</h4>
+                                    <p class="text-gray-300">19:45 WIB - Selesai</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start space-x-4">
+                                <div class="bg-primary/20 p-3 rounded-full text-primary shadow-inner">
+                                    <i class="fas fa-map-marker-alt text-2xl px-1"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg">Lokasi Acara</h4>
+                                    <p class="text-gray-300 leading-relaxed">PONDOK GONTOR KAMPUS 3 DARUL MA'RIFAT <br> SUMBERCANGKRING GURAH KEDIRI</p>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="https://maps.app.goo.gl/k1zQg7QCByLDz2iAA" target="_blank" class="inline-block mt-10 glow-button bg-primary text-black font-bold py-3 px-8 rounded-lg shadow-lg hover:shadow-xl transition-all">
+                            <i class="fas fa-directions mr-2"></i> Petunjuk Lokasi
+                        </a>
+                    </div>
+                    <div data-aos="fade-left" class="rounded-xl overflow-hidden glow-border h-[400px]">
+                        <iframe 
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3953.513470695057!2d112.11583007584109!3d-7.735235876672332!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e785b733156948f%3A0xb3a9925917865f12!2sPondok%20Modern%20Darussalam%20Gontor%20Kampus%203!5e0!3m2!1sid!2sid!4v1715690000000!5m2!1sid!2sid" 
+                            width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- GALLERY SECTION -->
+        <section class="py-20 bg-neutral-900 border-y border-white/5">
+            <div class="container mx-auto px-4">
+                <div class="text-center mb-16" data-aos="fade-up">
+                    <h2 class="text-4xl font-cinzel font-bold text-primary mb-4">GALERI KEGIATAN</h2>
+                    <div class="h-1 w-20 bg-primary mx-auto rounded-full"></div>
+                </div>
+                
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
+                    <div class="overflow-hidden rounded-lg glow-border group cursor-pointer" data-aos="fade-up" data-aos-delay="0">
+                        <img src="https://lh3.googleusercontent.com/d/1yrwh1lPY5ZdsDmjRe1NEu_7tS60GeSrS" class="w-full h-48 md:h-64 object-cover transition-transform duration-700 group-hover:scale-110" loading="lazy">
+                    </div>
+                    <div class="overflow-hidden rounded-lg glow-border group cursor-pointer" data-aos="fade-up" data-aos-delay="100">
+                        <img src="https://lh3.googleusercontent.com/d/1wqkkjYfQG8KVh9C5zat9t5LJS8ANSmMz" class="w-full h-48 md:h-64 object-cover transition-transform duration-700 group-hover:scale-110" loading="lazy">
+                    </div>
+                    <div class="overflow-hidden rounded-lg glow-border group cursor-pointer" data-aos="fade-up" data-aos-delay="200">
+                        <img src="https://lh3.googleusercontent.com/d/1XzkNZ_WBYf1zxjh7Sc6XQM7Ewl0QHyj7" class="w-full h-48 md:h-64 object-cover transition-transform duration-700 group-hover:scale-110" loading="lazy">
+                    </div>
+                    <div class="overflow-hidden rounded-lg glow-border group cursor-pointer" data-aos="fade-up" data-aos-delay="0">
+                        <img src="https://lh3.googleusercontent.com/d/17NmLjqxHRyXIA92apm-YFvz-J08mgjsh" class="w-full h-48 md:h-64 object-cover transition-transform duration-700 group-hover:scale-110" loading="lazy">
+                    </div>
+                    <div class="overflow-hidden rounded-lg glow-border group cursor-pointer" data-aos="fade-up" data-aos-delay="100">
+                        <img src="https://lh3.googleusercontent.com/d/1ruURvRtEAZKvZWz7gF85Z8NET6MQlDbn" class="w-full h-48 md:h-64 object-cover transition-transform duration-700 group-hover:scale-110" loading="lazy">
+                    </div>
+                    <div class="overflow-hidden rounded-lg glow-border group cursor-pointer" data-aos="fade-up" data-aos-delay="200">
+                        <img src="https://lh3.googleusercontent.com/d/1Hhd4_fV7G3vD4j6kjPbTMPn4NkM3o0Nb" class="w-full h-48 md:h-64 object-cover transition-transform duration-700 group-hover:scale-110" loading="lazy">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FLOOR PLAN / DENAH -->
+        <section class="py-20 px-4">
+            <div class="container mx-auto max-w-4xl text-center">
+                <h2 class="text-3xl font-cinzel font-bold text-primary mb-10" data-aos="fade-up">DENAH ACARA</h2>
+                <div class="glass p-4 md:p-6 rounded-2xl glow-border shadow-2xl" data-aos="fade-up">
+                    <img src="https://lh3.googleusercontent.com/d/1jx0gnNQiUjgo5wPQWZp78NammjCpa8gK" alt="Denah Acara" class="w-full rounded-xl" loading="lazy">
+                </div>
+            </div>
+        </section>
+
+        <!-- RSVP & GUESTBOOK -->
+        <section class="py-20 bg-black relative">
+            <!-- Decorative gradient element -->
+            <div class="absolute inset-0 bg-gradient-to-t from-primary/5 to-transparent pointer-events-none"></div>
+            
+            <div class="container mx-auto px-4 max-w-4xl relative z-10">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                    <!-- RSVP -->
+                    <div data-aos="fade-up">
+                        <h2 class="text-3xl font-cinzel font-bold text-primary mb-6">KONFIRMASI KEHADIRAN</h2>
+                        <form id="rsvpForm" class="space-y-4 glass p-6 rounded-xl border-white/10">
+                            <div>
+                                <label class="block text-sm mb-1 text-gray-400">Nama Lengkap</label>
+                                <input type="text" id="rsvpName" required class="w-full bg-black/50 border border-white/20 rounded-lg py-3 px-4 focus:border-primary outline-none transition-all text-white">
+                            </div>
+                            <div>
+                                <label class="block text-sm mb-1 text-gray-400">Status Kehadiran</label>
+                                <select id="rsvpStatus" class="w-full bg-black/50 border border-white/20 rounded-lg py-3 px-4 focus:border-primary outline-none text-white">
+                                    <option value="Hadir" class="bg-neutral-900">Hadir</option>
+                                    <option value="Tidak Hadir" class="bg-neutral-900">Tidak Hadir</option>
+                                    <option value="Masih Ragu" class="bg-neutral-900">Masih Ragu</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="w-full bg-primary text-black font-bold py-3 rounded-lg glow-button uppercase tracking-widest mt-4">Kirim Konfirmasi</button>
+                        </form>
+                    </div>
+
+                    <!-- GUESTBOOK FORM -->
+                    <div data-aos="fade-up" data-aos-delay="150">
+                        <h2 class="text-3xl font-cinzel font-bold text-primary mb-6">UCAPAN & DOA</h2>
+                        <form id="wishForm" class="space-y-4 glass p-6 rounded-xl border-white/10">
+                            <input type="text" id="wishName" placeholder="Nama Anda" required class="w-full bg-black/50 border border-white/20 rounded-lg py-3 px-4 focus:border-primary outline-none transition-all text-white">
+                            <textarea id="wishMessage" placeholder="Tulis ucapan Anda..." rows="4" required class="w-full bg-black/50 border border-white/20 rounded-lg py-3 px-4 focus:border-primary outline-none transition-all text-white resize-none"></textarea>
+                            <button type="submit" class="w-full border-2 border-primary text-primary font-bold py-3 rounded-lg hover:bg-primary hover:text-black transition-all duration-300 uppercase tracking-widest">Kirim Ucapan</button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- WISH LIST DISPLAY -->
+                <div class="mt-16 glass p-6 md:p-8 rounded-2xl border-white/10" data-aos="fade-up">
+                    <h3 class="font-cinzel text-xl text-primary mb-6 flex items-center gap-3">
+                        <i class="fas fa-comment-dots"></i> Daftar Ucapan Tamu
+                    </h3>
+                    <div id="wishList" class="space-y-6 max-h-[400px] overflow-y-auto pr-4 custom-scrollbar">
+                        <!-- Wishes will be injected here -->
+                        <div class="border-b border-white/10 pb-4">
+                            <h5 class="font-bold text-primary">Ust. Ahmad Fauzi</h5>
+                            <p class="text-gray-300 italic text-sm mt-1">"Sukses terus untuk Drama Arena 5101. Nyalakan terus api perjuangan para santri!"</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer class="py-12 border-t border-white/10 text-center bg-black">
+            <img src="https://lh3.googleusercontent.com/d/1gbmxfQCB_wSzssFWNQ-S6b_VZMycrvA9" class="w-16 mx-auto mb-6 opacity-50">
+            <p class="text-sm text-gray-500 uppercase tracking-[0.5em]">&copy; 2026 Drama Arena 5101</p>
+            <p class="text-xs text-gray-600 mt-2">Pondok Gontor Kampus 3 Darul Ma'rifat</p>
+        </footer>
+
+    </main>
+
+    <!-- Success Modal -->
+    <div id="successModal" class="fixed inset-0 z-[10000] hidden flex items-center justify-center p-4 bg-black/80 backdrop-blur-md transition-all duration-300">
+        <div class="bg-neutral-900 border border-primary p-8 rounded-2xl max-w-sm w-full text-center shadow-[0_0_30px_rgba(255,128,0,0.3)] animate__animated animate__zoomIn animate__faster">
+            <div class="w-20 h-20 bg-primary/20 rounded-full flex items-center justify-center mx-auto mb-6">
+                <i class="fas fa-check text-4xl text-primary"></i>
+            </div>
+            <h3 class="text-2xl font-cinzel text-white mb-2">Terima Kasih!</h3>
+            <p id="modalMsg" class="text-gray-400 mb-6">Pesan Anda telah berhasil kami simpan.</p>
+            <button onclick="closeModal()" class="w-full bg-primary text-black font-bold py-3 rounded-lg hover:shadow-[0_0_15px_rgba(255,128,0,0.5)] transition-all">Tutup</button>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        // Inisialisasi AOS
+        AOS.init({
+            duration: 1000,
+            once: false, // Ubah ke false jika ingin animasi muncul lagi saat discroll ke atas
+            mirror: true,
+            offset: 50
+        });
+
+        const bgMusic = document.getElementById('bgMusic');
+        const musicToggle = document.getElementById('musicToggle');
+        let isPlaying = false;
+
+        function openInvitation() {
+            const cover = document.getElementById('cover');
+            const mainContent = document.getElementById('main-content');
+            
+            // 1. Langsung eksekusi musik di dalam event klik agar dipercaya Browser (Autoplay Policy)
+            playMusic();
+            
+            // 2. Memicu animasi cover keluar
+            cover.classList.add('opened');
+            
+            // 3. Tampilkan main content & tombol musik
+            mainContent.classList.remove('hidden');
+            // Sedikit delay untuk efek fade-in
+            setTimeout(() => {
+                mainContent.classList.remove('opacity-0');
+            }, 100);
+
+            musicToggle.classList.remove('opacity-0');
+            musicToggle.classList.remove('pointer-events-none');
+            
+            // 4. Buka akses scroll dan hilangkan cover dari DOM setelah animasi selesai
+            setTimeout(() => {
+                cover.style.display = 'none';
+                document.body.classList.remove('overflow-hidden');
+                // Refresh AOS agar kalkulasi posisi elemen akurat setelah cover hilang
+                AOS.refresh(); 
+            }, 1200);
+        }
+
+        function playMusic() {
+            bgMusic.volume = 1.0;
+            let playPromise = bgMusic.play();
+            
+            if (playPromise !== undefined) {
+                playPromise.then(() => {
+                    isPlaying = true;
+                    musicToggle.innerHTML = '<i class="fas fa-compact-disc fa-spin"></i>';
+                }).catch(e => {
+                    console.log("Audio terblokir atau bermasalah: ", e);
+                    // Jika gagal, tampilkan icon stop/error
+                    musicToggle.innerHTML = '<i class="fas fa-play"></i>';
+                    isPlaying = false;
+                });
+            }
+        }
+
+        // Toggle untuk klik tombol musik
+        musicToggle.onclick = () => {
+            if (isPlaying) {
+                bgMusic.pause();
+                musicToggle.innerHTML = '<i class="fas fa-music"></i>';
+            } else {
+                playMusic();
+            }
+            isPlaying = !isPlaying;
+        };
+
+        // Countdown Logic
+        const targetDate = new Date("May 17, 2026 19:45:00").getTime();
+
+        const countdown = setInterval(() => {
+            const now = new Date().getTime();
+            const distance = targetDate - now;
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById("days").innerText = days.toString().padStart(2, '0');
+            document.getElementById("hours").innerText = hours.toString().padStart(2, '0');
+            document.getElementById("minutes").innerText = minutes.toString().padStart(2, '0');
+            document.getElementById("seconds").innerText = seconds.toString().padStart(2, '0');
+
+            if (distance < 0) {
+                clearInterval(countdown);
+                document.querySelector(".countdown-container").innerHTML = "<h2 class='text-primary text-3xl font-cinzel'>ACARA TELAH DIMULAI</h2>";
+            }
+        }, 1000);
+
+        // Forms Logic
+        const rsvpForm = document.getElementById('rsvpForm');
+        const wishForm = document.getElementById('wishForm');
+        const wishList = document.getElementById('wishList');
+        const successModal = document.getElementById('successModal');
+
+        function showModal(msg) {
+            document.getElementById('modalMsg').innerText = msg;
+            successModal.classList.remove('hidden');
+        }
+
+        function closeModal() {
+            const modalContent = successModal.querySelector('div');
+            // Tambahkan efek zoomOut sebelum menghilang
+            modalContent.classList.remove('animate__zoomIn');
+            modalContent.classList.add('animate__zoomOut');
+            
+            setTimeout(() => {
+                successModal.classList.add('hidden');
+                modalContent.classList.remove('animate__zoomOut');
+                modalContent.classList.add('animate__zoomIn');
+            }, 300);
+        }
+
+        rsvpForm.onsubmit = (e) => {
+            e.preventDefault();
+            const name = document.getElementById('rsvpName').value;
+            showModal(`Halo ${name}, konfirmasi kehadiran Anda telah tersimpan. Sampai jumpa di lokasi!`);
+            rsvpForm.reset();
+        };
+
+        wishForm.onsubmit = (e) => {
+            e.preventDefault();
+            const name = document.getElementById('wishName').value;
+            const msg = document.getElementById('wishMessage').value;
+            
+            // Add to list
+            const div = document.createElement('div');
+            div.className = 'border-b border-white/10 pb-4 animate__animated animate__fadeInUp';
+            div.innerHTML = `<h5 class="font-bold text-primary">${name}</h5><p class="text-gray-300 italic text-sm mt-1">"${msg}"</p>`;
+            wishList.prepend(div);
+            
+            showModal("Terima kasih atas ucapan dan doanya!");
+            wishForm.reset();
+        };
+    </script>
+</body>
+</html>
